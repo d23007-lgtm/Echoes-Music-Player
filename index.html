@@ -439,73 +439,96 @@
       opacity: .75;
     }
 
-    /* =========================
-       再生バー
-    ========================= */
+  
+/* =========================
+   再生バー
+========================= */
 
-    .playback-area {
-      width: 100%;
-      margin-top: 30px;
-    }
+.playback-area {
+  width: 100%;
+  margin-top: 30px;
+}
 
-    #seekBar {
-      --progress: 0%;
+/* シークバー本体 */
+#seekBar {
+  --progress: 0%;
 
-      display: block;
-      width: 100%;
-      height: 4px;
-      margin: 0;
-      padding: 0;
-      appearance: none;
-      -webkit-appearance: none;
-      border: 0;
-      border-radius: 10px;
-      outline: none;
-      background: linear-gradient(
-        to right,
-        var(--ivory) 0%,
-        var(--ivory) var(--progress),
-        #ffffff40 var(--progress),
-        #ffffff40 100%
-      );
-      cursor: pointer;
-      touch-action: pan-y;
-    }
+  display: block;
+  width: 100%;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  border-radius: 10px;
+  outline: none;
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+}
 
-    #seekBar::-webkit-slider-runnable-track {
-      height: 4px;
-      border: 0;
-      border-radius: 10px;
-      background: transparent;
-    }
+/* Chrome・Edge：バーのレール */
+#seekBar::-webkit-slider-runnable-track {
+  height: 4px;
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(
+    to right,
+    var(--ivory) 0%,
+    var(--ivory) var(--progress),
+    #ffffff40 var(--progress),
+    #ffffff40 100%
+  );
+}
 
-   /* シークバーの丸を大きくする */
+/* Chrome・Edge：丸をレールの中央に配置 */
 #seekBar::-webkit-slider-thumb {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  margin-top: -7px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  background: var(--ivory);
+  box-shadow: 0 0 8px #00000030;
+  cursor: grab;
 }
 
+#seekBar:active::-webkit-slider-thumb {
+  cursor: grabbing;
+}
+
+/* Firefox：レール */
+#seekBar::-moz-range-track {
+  height: 4px;
+  border: 0;
+  border-radius: 10px;
+  background: #ffffff40;
+}
+
+/* Firefox：進捗部分 */
+#seekBar::-moz-range-progress {
+  height: 4px;
+  border-radius: 10px;
+  background: var(--ivory);
+}
+
+/* Firefox：丸 */
 #seekBar::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  background: var(--ivory);
+  box-shadow: 0 0 8px #00000030;
+  cursor: grab;
 }
 
-    #seekBar::-moz-range-progress {
-      height: 4px;
-      border-radius: 10px;
-      background: var(--ivory);
-    }
-
-    #seekBar::-moz-range-thumb {
-      width: 10px;
-      height: 10px;
-      border: 1px solid var(--gold);
-      border-radius: 50%;
-      background: var(--ivory);
-      box-shadow: 0 0 8px #00000030;
-    }
+#seekBar:active::-moz-range-thumb {
+  cursor: grabbing;
+}
 
     .time-row {
       display: flex;
