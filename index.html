@@ -90,21 +90,21 @@
       color: #a9a49b;
     }
 
-    .cover {
-      width: min(100%, 310px);
-      aspect-ratio: 1;
-      margin: 0 auto 27px;
-      background: #33353a;
-      display: grid;
-      place-items: center;
-      border: 1px solid #55504a;
-      color: #d7c8a6;
-      text-align: center;
-      padding: 20px;
-      background-image: url("assets/在りし日の歌.jpg");
-      background-size: cover;
-      background-position: center;
-    }
+.cover {
+  width: min(100%, 310px);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto 27px;
+  background: #33353a;
+  border: 1px solid #55504a;
+  overflow: hidden;
+}
+
+.cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 
     .cover-inner {
       border: 1px solid #877858;
@@ -244,8 +244,8 @@ const tracks = [
   },
   {
     title: "在りし日の唄",
-    src: "assets/在りし日の歌.m4a",
-    cover: "assets/在りし日の歌.jpg"
+    src: "assets/在りし日の唄.m4a",
+    cover: "assets/在りし日の唄.jpg"
   },
   {
     title: "往く地の果てには",
