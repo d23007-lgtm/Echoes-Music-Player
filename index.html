@@ -534,29 +534,35 @@
       });
     }
 
-    function openTrack(index) {
-      currentIndex = (index + tracks.length) % tracks.length;
-      const track = tracks[currentIndex];
+  function openTrack(index) {
+  currentIndex = (index + tracks.length) % tracks.length;
+  const track = tracks[currentIndex];
 
-      audio.pause();
-      audio.src = track.src;
-      audio.load();
+  audio.pause();
+  audio.src = track.src;
+  audio.load();
 
-      currentTitle.textContent = track.title;
-      coverImage.src = track.cover;
-      coverImage.alt = track.title + "のジャケット";
+  currentTitle.textContent = track.title;
+  coverImage.src = track.cover;
+  coverImage.alt = track.title + "のジャケット";
 
-      listScreen.classList.add("hidden");
-      playerScreen.classList.remove("hidden");
+  // 選択した曲のジャケットを背景画像に設定
+  playerScreen.style.setProperty(
+    "--cover-bg",
+    `url("${track.cover}")`
+  );
 
-      playButton.textContent = "▶";
-      playButton.setAttribute("aria-label", "再生");
-      seekBar.value = 0;
-      currentTime.textContent = "0:00";
-      duration.textContent = "0:00";
-      message.textContent = "再生ボタンを押してください。";
-    }
+  listScreen.classList.add("hidden");
+  playerScreen.classList.remove("hidden");
 
+  playButton.textContent = "▶";
+  playButton.setAttribute("aria-label", "再生");
+  seekBar.value = 0;
+  currentTime.textContent = "0:00";
+  duration.textContent = "0:00";
+  message.textContent = "再生ボタンを押してください。";
+}
+    
     function formatTime(seconds) {
       if (!Number.isFinite(seconds)) return "0:00";
 
