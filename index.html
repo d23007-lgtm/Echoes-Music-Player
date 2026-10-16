@@ -43,7 +43,11 @@
           #493238 0%,
           transparent 52%
         ),
-        linear-gradient(160deg, var(--panel), var(--background) 70%);
+        linear-gradient(
+          160deg,
+          var(--panel),
+          var(--background) 70%
+        );
     }
 
     header {
@@ -152,14 +156,69 @@
 
     /* 再生画面 */
 
+    #playerScreen {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      min-height: 100vh;
+      margin: -28px -22px;
+      padding: 28px 22px;
+      background: var(--background);
+    }
+
+    /* ジャケットを拡大したぼかし背景 */
+
+    #playerScreen::before {
+      content: "";
+      position: absolute;
+      z-index: -2;
+      inset: -35px;
+      background-image: var(--cover-bg, none);
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      filter: blur(30px) brightness(.48) saturate(.85);
+      transform: scale(1.08);
+    }
+
+    /* 背景を暗くして文字を読みやすくする */
+
+    #playerScreen::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(23, 23, 25, .48) 0%,
+        rgba(23, 23, 25, .65) 45%,
+        rgba(23, 23, 25, .94) 100%
+      );
+      pointer-events: none;
+    }
+
+    #playerScreen > * {
+      position: relative;
+    }
+
+    .player-header {
+      margin-bottom: 26px;
+    }
+
+    .player-header .back {
+      font-size: 14px;
+    }
+
+    /* 中央のジャケット */
+
     .cover {
       width: min(100%, 310px);
       aspect-ratio: 1 / 1;
-      margin: 0 auto 27px;
+      margin: 0 auto 28px;
       background: var(--panel);
       border: 1px solid #6B5555;
       overflow: hidden;
-      box-shadow: 0 12px 32px #00000030;
+      box-shadow: 0 16px 40px #00000045;
     }
 
     .cover img {
@@ -172,113 +231,157 @@
     .player-title {
       text-align: center;
       font-family: Georgia, "Yu Mincho", serif;
-      font-size: 19px;
+      font-size: 21px;
       font-weight: 500;
       line-height: 1.6;
-      margin: 0 0 8px;
+      letter-spacing: .06em;
       overflow-wrap: anywhere;
+      margin: 0 0 8px;
     }
 
     .player-subtitle {
       text-align: center;
-      font-size: 10px;
-      letter-spacing: .18em;
       color: var(--muted);
-      margin-bottom: 32px;
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
     }
 
-    /* 再生時間・シークバー */
+    /* 再生位置 */
+
+    .progress-area {
+      margin-top: 24px;
+    }
+
+    #seekBar {
+      display: block;
+      width: 100%;
+      height: 4px;
+      margin: 0;
+      appearance: none;
+      -webkit-appearance: none;
+      border-radius: 0;
+      background: var(--line);
+      cursor: pointer;
+      accent-color: var(--gold);
+    }
+
+    #seekBar::-webkit-slider-thumb {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--ivory);
+      border: 1px solid var(--gold);
+    }
+
+    #seekBar::-moz-range-thumb {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--ivory);
+      border: 1px solid var(--gold);
+    }
 
     .time-row {
       display: flex;
       justify-content: space-between;
       color: var(--muted);
       font-size: 11px;
-      margin-top: 10px;
+      margin-top: 12px;
       font-variant-numeric: tabular-nums;
     }
 
-    input[type="range"] {
-      display: block;
-      width: 100%;
-      margin: 0;
-      accent-color: var(--red);
-      cursor: pointer;
-    }
-
-    /* 操作ボタン */
+    /* 再生コントロール */
 
     .controls {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 35px;
-      margin: 30px 0;
+      gap: 34px;
+      margin-top: 30px;
     }
 
-    .control {
-      background: transparent;
+    .control-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
       border: 0;
-      color: var(--ivory);
-      font-size: 24px;
-      min-width: 34px;
-      padding: 8px 0;
-      transition: color .2s ease;
-    }
-
-    .control:hover {
-      color: var(--gold);
-    }
-
-    .play {
-      display: grid;
-      place-items: center;
-      width: 62px;
-      height: 62px;
-      flex-shrink: 0;
       border-radius: 50%;
-      border: 1px solid var(--red);
-      background: var(--red);
-      color: #FFFFFF;
-      font-size: 24px;
+      background: transparent;
+      color: var(--ivory);
+      font-size: 22px;
       transition:
+        color .2s ease,
         background .2s ease,
         transform .2s ease;
     }
 
-    .play:hover {
+    .control-button:hover {
+      color: var(--gold);
+      transform: scale(1.06);
+    }
+
+    .play-button {
+      width: 62px;
+      height: 62px;
+      background: var(--red);
+      color: var(--ivory);
+      font-size: 24px;
+      box-shadow: 0 5px 20px #00000035;
+    }
+
+    .play-button:hover {
       background: var(--red-hover);
-      transform: scale(1.04);
+      color: var(--ivory);
     }
 
-    .play:active {
-      transform: scale(.97);
+    .play-button:active {
+      transform: scale(.96);
     }
 
-    .hidden {
-      display: none;
-    }
-
-    .note {
-      font-size: 11px;
+    .status-message {
+      min-height: 18px;
+      margin-top: 20px;
       color: var(--muted);
-      line-height: 1.8;
+      font-size: 11px;
+      line-height: 1.7;
       text-align: center;
-      margin-top: 28px;
     }
+
+    /* スマートフォンでの表示調整 */
 
     @media (max-width: 360px) {
       main {
-        padding: 24px 16px;
+        padding-right: 16px;
+        padding-left: 16px;
       }
 
-      .track-cover {
-        width: 52px;
-        height: 52px;
+      #playerScreen {
+        margin-right: -16px;
+        margin-left: -16px;
+        padding-right: 16px;
+        padding-left: 16px;
+      }
+
+      .cover {
+        width: min(100%, 280px);
       }
 
       .controls {
-        gap: 26px;
+        gap: 24px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
       }
     }
   </style>
