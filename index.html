@@ -301,7 +301,9 @@ const tracks = [
       const track = tracks[currentIndex];
 
       document.getElementById("currentTitle").textContent = track.title;
-      document.getElementById("coverCaption").textContent = track.title;
+const coverImage = document.getElementById("coverImage");
+coverImage.src = track.cover;
+coverImage.alt = track.title + "のジャケット";
 
       listScreen.classList.add("hidden");
       playerScreen.classList.remove("hidden");
