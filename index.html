@@ -58,37 +58,57 @@
     }
 
     .track {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      width: 100%;
-      padding: 17px 12px;
-      border: 0;
-      border-bottom: 1px solid #45464a;
-      color: #f3f0e9;
-      background: transparent;
-      text-align: left;
-    }
+    
+.track {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  border-bottom: 1px solid #45464a;
+  color: #f3f0e9;
+  background: transparent;
+  text-align: left;
+}
 
-    .track:hover {
-      background: #ffffff0b;
-    }
+.track:hover {
+  background: #ffffff0b;
+}
 
-    .number {
-      color: #b9a77d;
-      font-size: 12px;
-      width: 22px;
-    }
+.track-cover {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border: 1px solid #55504a;
+  border-radius: 3px;
+  background: #33353a;
+}
 
-    .track-title {
-      flex: 1;
-      font-size: 14px;
-      line-height: 1.7;
-    }
+.track-info {
+  flex: 1;
+  min-width: 0;
+}
 
-    .arrow {
-      color: #a9a49b;
-    }
+.track-title {
+  display: block;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.track-subtitle {
+  display: block;
+  color: #aaa69e;
+  font-size: 10px;
+  letter-spacing: .12em;
+  margin-top: 3px;
+}
+
+.arrow {
+  color: #a9a49b;
+  flex-shrink: 0;
+}
 
 .cover {
   width: min(100%, 310px);
@@ -273,31 +293,45 @@ const tracks = [
     const playButton = document.getElementById("playButton");
     const seekBar = document.getElementById("seekBar");
     const message = document.getElementById("message");
+   
+function renderList() {
+  trackList.innerHTML = "";
 
-    function renderList() {
-      trackList.innerHTML = "";
+  tracks.forEach((track, index) => {
+    const button = document.createElement("button");
+    button.className = "track";
 
-      tracks.forEach((track, index) => {
-        const button = document.createElement("button");
-        button.className = "track";
+    // ジャケット画像
+    const cover = document.createElement("img");
+    cover.className = "track-cover";
+    cover.src = track.cover;
+    cover.alt = track.title + "のジャケット";
+    cover.loading = "lazy";
 
-        const number = document.createElement("span");
-        number.className = "number";
-        number.textContent = String(index + 1).padStart(2, "0");
+    // 曲名とサブタイトル
+    const info = document.createElement("span");
+    info.className = "track-info";
 
-        const title = document.createElement("span");
-        title.className = "track-title";
-        title.textContent = track.title;
+    const title = document.createElement("span");
+    title.className = "track-title";
+    title.textContent = track.title;
 
-        const arrow = document.createElement("span");
-        arrow.className = "arrow";
-        arrow.textContent = "›";
+    const subtitle = document.createElement("span");
+    subtitle.className = "track-subtitle";
+    subtitle.textContent = "SOUNDTRACK";
 
-        button.append(number, title, arrow);
-        button.addEventListener("click", () => openTrack(index));
-        trackList.appendChild(button);
-      });
-    }
+    // 右側の矢印
+    const arrow = document.createElement("span");
+    arrow.className = "arrow";
+    arrow.textContent = "›";
+
+    info.append(title, subtitle);
+    button.append(cover, info, arrow);
+
+    button.addEventListener("click", () => openTrack(index));
+    trackList.appendChild(button);
+  });
+}
 
     function openTrack(index) {
       currentIndex = (index + tracks.length) % tracks.length;
