@@ -440,6 +440,43 @@
     .play:active {
       transform: scale(.96);
     }
+    
+/* ページ切り替えアニメーション */
+#listScreen,
+#playerScreen {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* 非表示の画面 */
+.hidden {
+  display: none !important;
+}
+
+/* 表示開始時のアニメーション */
+.fade-in {
+  animation: pageFadeIn 0.35s ease both;
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 動きを減らす設定が有効な場合 */
+@media (prefers-reduced-motion: reduce) {
+  #listScreen,
+  #playerScreen,
+  .fade-in {
+    animation: none;
+    transition: none;
+  }
+}
   </style>
 </head>
 
@@ -608,9 +645,12 @@
     `url("${track.cover}")`
   );
 
-  listScreen.classList.add("hidden");
-  playerScreen.classList.remove("hidden");
+listScreen.classList.add("hidden");
+playerScreen.classList.remove("hidden");
 
+playerScreen.classList.remove("fade-in");
+void playerScreen.offsetWidth;
+playerScreen.classList.add("fade-in");
   playButton.textContent = "▶";
   playButton.setAttribute("aria-label", "再生");
   seekBar.value = 0;
@@ -660,12 +700,18 @@
         message.textContent = "一時停止中";
       }
     });
+   
+document.getElementById("backButton").addEventListener("click", () => {
+  audio.pause();
 
-    document.getElementById("backButton").addEventListener("click", () => {
-      audio.pause();
-      listScreen.classList.remove("hidden");
-      playerScreen.classList.add("hidden");
-    });
+  playerScreen.classList.add("hidden");
+  listScreen.classList.remove("hidden");
+
+  // 曲一覧をふわっと表示
+  listScreen.classList.remove("fade-in");
+  void listScreen.offsetWidth;
+  listScreen.classList.add("fade-in");
+});
 
     document.getElementById("prevButton").addEventListener("click", () => {
       openTrack(currentIndex - 1);
