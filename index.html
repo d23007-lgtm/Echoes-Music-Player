@@ -14,6 +14,7 @@
     :root {
       --background: #171719;
       --panel: #30272A;
+      --panel-light: #3B3034;
       --red: #A51F2B;
       --red-hover: #C02A37;
       --ivory: #F0E9D9;
@@ -36,7 +37,13 @@
       min-height: 100vh;
       margin: auto;
       padding: 28px 22px;
-      background: linear-gradient(160deg, #30272A, #171719 70%);
+      background:
+        radial-gradient(
+          ellipse at top,
+          #493238 0%,
+          transparent 52%
+        ),
+        linear-gradient(160deg, var(--panel), var(--background) 70%);
     }
 
     header {
@@ -56,6 +63,18 @@
     input:focus-visible {
       outline: 2px solid var(--gold);
       outline-offset: 4px;
+    }
+
+    .back {
+      border: 0;
+      background: transparent;
+      color: var(--ivory);
+      font-size: 14px;
+      padding: 8px 0;
+    }
+
+    .back:hover {
+      color: var(--gold);
     }
 
     h1 {
@@ -133,78 +152,14 @@
 
     /* 再生画面 */
 
-    #playerScreen {
-      position: relative;
-      isolation: isolate;
-      overflow: hidden;
-      min-height: 100vh;
-      margin: -28px -22px;
-      padding: 28px 22px;
-      background: var(--background);
-    }
-
-    /* ジャケットを拡大したぼかし背景 */
-
-    #playerScreen::before {
-      content: "";
-      position: absolute;
-      z-index: -2;
-      inset: -35px;
-      background-image: var(--cover-bg, none);
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-      filter: blur(30px) brightness(.48) saturate(.85);
-      transform: scale(1.08);
-      transition: opacity .4s ease;
-    }
-
-    /* 背景を暗くして文字を読みやすくする */
-
-    #playerScreen::after {
-      content: "";
-      position: absolute;
-      z-index: -1;
-      inset: 0;
-      background: linear-gradient(
-        180deg,
-        rgba(23, 23, 25, .48) 0%,
-        rgba(23, 23, 25, .65) 45%,
-        rgba(23, 23, 25, .94) 100%
-      );
-      pointer-events: none;
-    }
-
-    #playerScreen > * {
-      position: relative;
-    }
-
-    .player-header {
-      margin-bottom: 26px;
-    }
-
-    .back {
-      border: 0;
-      background: transparent;
-      color: var(--ivory);
-      font-size: 14px;
-      padding: 8px 0;
-    }
-
-    .back:hover {
-      color: var(--gold);
-    }
-
-    /* 中央のジャケット */
-
     .cover {
       width: min(100%, 310px);
       aspect-ratio: 1 / 1;
-      margin: 0 auto 28px;
+      margin: 0 auto 27px;
       background: var(--panel);
       border: 1px solid #6B5555;
       overflow: hidden;
-      box-shadow: 0 16px 40px #00000045;
+      box-shadow: 0 12px 32px #00000030;
     }
 
     .cover img {
@@ -217,3 +172,377 @@
     .player-title {
       text-align: center;
       font-family: Georgia, "Yu Mincho", serif;
+      font-size: 19px;
+      font-weight: 500;
+      line-height: 1.6;
+      margin: 0 0 8px;
+      overflow-wrap: anywhere;
+    }
+
+    .player-subtitle {
+      text-align: center;
+      font-size: 10px;
+      letter-spacing: .18em;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    /* 再生時間・シークバー */
+
+    .time-row {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 10px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    input[type="range"] {
+      display: block;
+      width: 100%;
+      margin: 0;
+      accent-color: var(--red);
+      cursor: pointer;
+    }
+
+    /* 操作ボタン */
+
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 35px;
+      margin: 30px 0;
+    }
+
+    .control {
+      background: transparent;
+      border: 0;
+      color: var(--ivory);
+      font-size: 24px;
+      min-width: 34px;
+      padding: 8px 0;
+      transition: color .2s ease;
+    }
+
+    .control:hover {
+      color: var(--gold);
+    }
+
+    .play {
+      display: grid;
+      place-items: center;
+      width: 62px;
+      height: 62px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      border: 1px solid var(--red);
+      background: var(--red);
+      color: #FFFFFF;
+      font-size: 24px;
+      transition:
+        background .2s ease,
+        transform .2s ease;
+    }
+
+    .play:hover {
+      background: var(--red-hover);
+      transform: scale(1.04);
+    }
+
+    .play:active {
+      transform: scale(.97);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .note {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.8;
+      text-align: center;
+      margin-top: 28px;
+    }
+
+    @media (max-width: 360px) {
+      main {
+        padding: 24px 16px;
+      }
+
+      .track-cover {
+        width: 52px;
+        height: 52px;
+      }
+
+      .controls {
+        gap: 26px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <section id="listScreen">
+      <header>
+        <div>
+          <h1>すべての曲</h1>
+          <div class="subtitle">Music Collection</div>
+        </div>
+      </header>
+
+      <div id="trackList"></div>
+      <p class="note">曲を選択すると再生画面に移動します。</p>
+    </section>
+
+    <section id="playerScreen" class="hidden">
+      <header>
+        <button class="back" id="backButton">← 曲一覧</button>
+      </header>
+
+      <div class="cover">
+        <img id="coverImage" src="" alt="ジャケット画像">
+      </div>
+
+      <h2 class="player-title" id="currentTitle"></h2>
+      <div class="player-subtitle">Shidanna</div>
+
+      <audio id="audio" preload="metadata"></audio>
+
+      <input
+        id="seekBar"
+        type="range"
+        min="0"
+        max="100"
+        value="0"
+        aria-label="再生位置"
+      >
+
+      <div class="time-row">
+        <span id="currentTime">0:00</span>
+        <span id="duration">0:00</span>
+      </div>
+
+      <div class="controls">
+        <button
+          class="control"
+          id="prevButton"
+          aria-label="前の曲"
+        >|◀</button>
+
+        <button
+          class="play"
+          id="playButton"
+          aria-label="再生"
+        >▶</button>
+
+        <button
+          class="control"
+          id="nextButton"
+          aria-label="次の曲"
+        >▶|</button>
+      </div>
+
+      <p class="note" id="message">曲を選択してください。</p>
+    </section>
+  </main>
+
+  <script>
+    const tracks = [
+      {
+        title: "タイトルループ",
+        src: "assets/タイトルループ.m4a",
+        cover: "assets/タイトルループ.jpg"
+      },
+      {
+        title: "在りし日の唄",
+        src: "assets/在りし日の唄.m4a",
+        cover: "assets/在りし日の唄.jpg"
+      },
+      {
+        title: "往く地の果てには",
+        src: "assets/往く地の果てには.m4a",
+        cover: "assets/往く地の果てには.jpg"
+      },
+      {
+        title: "王の子は煉獄に踊る",
+        src: "assets/王の子は煉獄に踊る.m4a",
+        cover: "assets/王の子は煉獄に踊る.jpg"
+      },
+      {
+        title: "神よ、その黄昏よ",
+        src: "assets/神よ、その黄昏よ.m4a",
+        cover: "assets/神よ、その黄昏よ.jpg"
+      }
+    ];
+
+    let currentIndex = 0;
+
+    const listScreen = document.getElementById("listScreen");
+    const playerScreen = document.getElementById("playerScreen");
+    const trackList = document.getElementById("trackList");
+    const audio = document.getElementById("audio");
+    const playButton = document.getElementById("playButton");
+    const seekBar = document.getElementById("seekBar");
+    const message = document.getElementById("message");
+    const coverImage = document.getElementById("coverImage");
+    const currentTitle = document.getElementById("currentTitle");
+    const currentTime = document.getElementById("currentTime");
+    const duration = document.getElementById("duration");
+
+    function renderList() {
+      trackList.innerHTML = "";
+
+      tracks.forEach((track, index) => {
+        const button = document.createElement("button");
+        button.className = "track";
+        button.type = "button";
+
+        const cover = document.createElement("img");
+        cover.className = "track-cover";
+        cover.src = track.cover;
+        cover.alt = "";
+        cover.loading = "lazy";
+
+        const info = document.createElement("span");
+        info.className = "track-info";
+
+        const title = document.createElement("span");
+        title.className = "track-title";
+        title.textContent = track.title;
+
+        const subtitle = document.createElement("span");
+        subtitle.className = "track-subtitle";
+        subtitle.textContent = "Shidanna";
+
+        const arrow = document.createElement("span");
+        arrow.className = "arrow";
+        arrow.textContent = "›";
+        arrow.setAttribute("aria-hidden", "true");
+
+        info.append(title, subtitle);
+        button.append(cover, info, arrow);
+
+        button.addEventListener("click", () => openTrack(index));
+        trackList.appendChild(button);
+      });
+    }
+
+    function openTrack(index) {
+      currentIndex = (index + tracks.length) % tracks.length;
+      const track = tracks[currentIndex];
+
+      audio.pause();
+      audio.src = track.src;
+      audio.load();
+
+      currentTitle.textContent = track.title;
+      coverImage.src = track.cover;
+      coverImage.alt = track.title + "のジャケット";
+
+      listScreen.classList.add("hidden");
+      playerScreen.classList.remove("hidden");
+
+      playButton.textContent = "▶";
+      playButton.setAttribute("aria-label", "再生");
+      seekBar.value = 0;
+      currentTime.textContent = "0:00";
+      duration.textContent = "0:00";
+      message.textContent = "再生ボタンを押してください。";
+    }
+
+    function formatTime(seconds) {
+      if (!Number.isFinite(seconds)) return "0:00";
+
+      const minutes = Math.floor(seconds / 60);
+      const remaining = Math.floor(seconds % 60);
+
+      return minutes + ":" + String(remaining).padStart(2, "0");
+    }
+
+    playButton.addEventListener("click", async () => {
+      if (!audio.getAttribute("src")) {
+        message.textContent = "曲を選択してください。";
+        return;
+      }
+
+      if (audio.paused) {
+        try {
+          await audio.play();
+        } catch (error) {
+          message.textContent =
+            "音源を読み込めません。ファイル名と保存場所を確認してください。";
+        }
+      } else {
+        audio.pause();
+      }
+    });
+
+    audio.addEventListener("play", () => {
+      playButton.textContent = "Ⅱ";
+      playButton.setAttribute("aria-label", "一時停止");
+      message.textContent = "再生中";
+    });
+
+    audio.addEventListener("pause", () => {
+      playButton.textContent = "▶";
+      playButton.setAttribute("aria-label", "再生");
+
+      if (audio.currentTime > 0 && !audio.ended) {
+        message.textContent = "一時停止中";
+      }
+    });
+
+    document.getElementById("backButton").addEventListener("click", () => {
+      audio.pause();
+      listScreen.classList.remove("hidden");
+      playerScreen.classList.add("hidden");
+    });
+
+    document.getElementById("prevButton").addEventListener("click", () => {
+      openTrack(currentIndex - 1);
+    });
+
+    document.getElementById("nextButton").addEventListener("click", () => {
+      openTrack(currentIndex + 1);
+    });
+
+    audio.addEventListener("loadedmetadata", () => {
+      duration.textContent = formatTime(audio.duration);
+    });
+
+    audio.addEventListener("timeupdate", () => {
+      currentTime.textContent = formatTime(audio.currentTime);
+
+      if (Number.isFinite(audio.duration) && audio.duration > 0) {
+        seekBar.value = audio.currentTime / audio.duration * 100;
+      }
+    });
+
+    seekBar.addEventListener("input", () => {
+      if (Number.isFinite(audio.duration) && audio.duration > 0) {
+        audio.currentTime =
+          Number(seekBar.value) / 100 * audio.duration;
+      }
+    });
+
+    audio.addEventListener("ended", () => {
+      playButton.textContent = "▶";
+      playButton.setAttribute("aria-label", "再生");
+      message.textContent = "再生が終了しました。";
+    });
+
+    audio.addEventListener("error", () => {
+      if (audio.getAttribute("src")) {
+        message.textContent =
+          "音源を読み込めません。ファイル名と保存場所を確認してください。";
+      }
+    });
+
+    renderList();
+  </script>
+</body>
+</html>
