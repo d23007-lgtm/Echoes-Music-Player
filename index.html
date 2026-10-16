@@ -667,9 +667,16 @@
 listScreen.classList.add("hidden");
 playerScreen.classList.remove("hidden");
 
+// 再生画面をアニメーション
 playerScreen.classList.remove("fade-in");
 void playerScreen.offsetWidth;
 playerScreen.classList.add("fade-in");
+
+// ジャケットも毎回アニメーション
+const cover = playerScreen.querySelector(".cover");
+cover.style.animation = "none";
+void cover.offsetWidth;
+cover.style.animation = "";
   playButton.textContent = "▶";
   playButton.setAttribute("aria-label", "再生");
   seekBar.value = 0;
