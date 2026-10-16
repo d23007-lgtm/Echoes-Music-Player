@@ -384,6 +384,63 @@
         transition-duration: 0.01ms !important;
       }
     }
+        /* 画面の表示・非表示 */
+    .hidden {
+      display: none !important;
+    }
+
+    /* 補足メッセージ */
+    .note {
+      min-height: 18px;
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    /* 再生ボタンのクラス名をHTMLに合わせる */
+    .control {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: var(--ivory);
+      font-size: 22px;
+      transition: color .2s ease, transform .2s ease;
+    }
+
+    .control:hover {
+      color: var(--gold);
+      transform: scale(1.06);
+    }
+
+    .play {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 62px;
+      height: 62px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--red);
+      color: var(--ivory);
+      font-size: 24px;
+      box-shadow: 0 5px 20px #00000035;
+      transition: background .2s ease, transform .2s ease;
+    }
+
+    .play:hover {
+      background: var(--red-hover);
+    }
+
+    .play:active {
+      transform: scale(.96);
+    }
   </style>
 </head>
 
