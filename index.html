@@ -3,16 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Echoes Music Player | Shidanna</title>
+  <meta name="theme-color" content="#171719">
+  <title>Echoes Music Player | Shidanna</title>
+
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --background: #171719;
+      --panel: #30272A;
+      --panel-light: #3B3034;
+      --red: #A51F2B;
+      --red-hover: #C02A37;
+      --ivory: #F0E9D9;
+      --muted: #C5B8B0;
+      --line: #514044;
+      --gold: #B6A078;
+    }
 
     body {
       margin: 0;
       min-height: 100vh;
-      background: #17191d;
-      color: #f3f0e9;
-      font-family: "Yu Gothic", sans-serif;
+      background: var(--background);
+      color: var(--ivory);
+      font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN",
+        Meiryo, sans-serif;
     }
 
     main {
@@ -20,7 +37,13 @@
       min-height: 100vh;
       margin: auto;
       padding: 28px 22px;
-      background: linear-gradient(160deg, #292c32, #17191d 65%);
+      background:
+        radial-gradient(
+          ellipse at top,
+          #493238 0%,
+          transparent 52%
+        ),
+        linear-gradient(160deg, var(--panel), var(--background) 70%);
     }
 
     header {
@@ -33,143 +56,157 @@
     button {
       font: inherit;
       cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 4px;
     }
 
     .back {
       border: 0;
       background: transparent;
-      color: #e9dfc8;
-      font-size: 16px;
+      color: var(--ivory);
+      font-size: 14px;
       padding: 8px 0;
     }
 
+    .back:hover {
+      color: var(--gold);
+    }
+
     h1 {
-      font-size: 21px;
+      font-family: Georgia, "Yu Mincho", serif;
+      font-size: 22px;
       font-weight: 500;
       letter-spacing: .12em;
       margin: 0;
     }
 
     .subtitle {
-      color: #aaa69e;
-      font-size: 11px;
-      letter-spacing: .18em;
-      margin-top: 7px;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: .2em;
+      margin-top: 8px;
+      text-transform: uppercase;
     }
-    
-.track {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  width: 100%;
-  padding: 12px;
-  border: 0;
-  border-bottom: 1px solid #45464a;
-  color: #f3f0e9;
-  background: transparent;
-  text-align: left;
-}
 
-.track:hover {
-  background: #ffffff0b;
-}
+    /* 曲一覧 */
 
-.track-cover {
-  width: 60px;
-  height: 60px;
-  flex-shrink: 0;
-  object-fit: cover;
-  border: 1px solid #55504a;
-  border-radius: 3px;
-  background: #33353a;
-}
+    .track {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 12px 8px;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      color: var(--ivory);
+      background: transparent;
+      text-align: left;
+      transition: background .2s ease;
+    }
 
-.track-info {
-  flex: 1;
-  min-width: 0;
-}
+    .track:hover,
+    .track:focus-visible {
+      background: #A51F2B22;
+    }
 
-.track-title {
-  display: block;
-  font-size: 14px;
-  line-height: 1.7;
-}
+    .track-cover {
+      width: 60px;
+      height: 60px;
+      flex-shrink: 0;
+      object-fit: cover;
+      border: 1px solid #6B5555;
+      border-radius: 2px;
+      background: var(--panel);
+    }
 
-.track-subtitle {
-  display: block;
-  color: #aaa69e;
-  font-size: 10px;
-  letter-spacing: .12em;
-  margin-top: 3px;
-}
+    .track-info {
+      flex: 1;
+      min-width: 0;
+    }
 
-.arrow {
-  color: #a9a49b;
-  flex-shrink: 0;
-}
+    .track-title {
+      display: block;
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
 
-.cover {
-  width: min(100%, 310px);
-  aspect-ratio: 1 / 1;
-  margin: 0 auto 27px;
-  background: #33353a;
-  border: 1px solid #55504a;
-  overflow: hidden;
-}
+    .track-subtitle {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: .12em;
+      margin-top: 4px;
+    }
 
-.cover img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
+    .arrow {
+      color: var(--gold);
+      flex-shrink: 0;
+      font-size: 22px;
+    }
 
-    .cover-inner {
-      border: 1px solid #877858;
+    /* 再生画面 */
+
+    .cover {
+      width: min(100%, 310px);
+      aspect-ratio: 1 / 1;
+      margin: 0 auto 27px;
+      background: var(--panel);
+      border: 1px solid #6B5555;
+      overflow: hidden;
+      box-shadow: 0 12px 32px #00000030;
+    }
+
+    .cover img {
+      display: block;
       width: 100%;
       height: 100%;
-      display: grid;
-      place-content: center;
-      gap: 12px;
-    }
-
-    .cover-mark {
-      font-size: 48px;
-      font-family: serif;
-    }
-
-    .cover-caption {
-      font-size: 12px;
-      letter-spacing: .15em;
+      object-fit: contain;
     }
 
     .player-title {
       text-align: center;
-      font-size: 18px;
+      font-family: Georgia, "Yu Mincho", serif;
+      font-size: 19px;
       font-weight: 500;
+      line-height: 1.6;
       margin: 0 0 8px;
+      overflow-wrap: anywhere;
     }
 
     .player-subtitle {
       text-align: center;
-      font-size: 11px;
-      color: #aaa69e;
-      margin-bottom: 30px;
+      font-size: 10px;
+      letter-spacing: .18em;
+      color: var(--muted);
+      margin-bottom: 32px;
     }
+
+    /* 再生時間・シークバー */
 
     .time-row {
       display: flex;
       justify-content: space-between;
-      color: #b8b4ad;
+      color: var(--muted);
       font-size: 11px;
       margin-top: 10px;
+      font-variant-numeric: tabular-nums;
     }
 
     input[type="range"] {
+      display: block;
       width: 100%;
-      accent-color: #c7b58c;
+      margin: 0;
+      accent-color: var(--red);
       cursor: pointer;
     }
+
+    /* 操作ボタン */
 
     .controls {
       display: flex;
@@ -182,32 +219,71 @@
     .control {
       background: transparent;
       border: 0;
-      color: #f3f0e9;
-      font-size: 25px;
+      color: var(--ivory);
+      font-size: 24px;
       min-width: 34px;
+      padding: 8px 0;
+      transition: color .2s ease;
+    }
+
+    .control:hover {
+      color: var(--gold);
     }
 
     .play {
+      display: grid;
+      place-items: center;
       width: 62px;
       height: 62px;
+      flex-shrink: 0;
       border-radius: 50%;
-      border: 1px solid #c7b58c;
-      background: #c7b58c;
-      color: #17191d;
+      border: 1px solid var(--red);
+      background: var(--red);
+      color: #FFFFFF;
       font-size: 24px;
+      transition:
+        background .2s ease,
+        transform .2s ease;
     }
 
-    .hidden { display: none; }
+    .play:hover {
+      background: var(--red-hover);
+      transform: scale(1.04);
+    }
+
+    .play:active {
+      transform: scale(.97);
+    }
+
+    .hidden {
+      display: none;
+    }
 
     .note {
       font-size: 11px;
-      color: #aaa69e;
+      color: var(--muted);
       line-height: 1.8;
       text-align: center;
       margin-top: 28px;
     }
+
+    @media (max-width: 360px) {
+      main {
+        padding: 24px 16px;
+      }
+
+      .track-cover {
+        width: 52px;
+        height: 52px;
+      }
+
+      .controls {
+        gap: 26px;
+      }
+    }
   </style>
 </head>
+
 <body>
   <main>
     <section id="listScreen">
@@ -227,60 +303,81 @@
         <button class="back" id="backButton">← 曲一覧</button>
       </header>
 
-   <div class="cover">
-  <img id="coverImage" src="" alt="ジャケット画像">
-</div>
+      <div class="cover">
+        <img id="coverImage" src="" alt="ジャケット画像">
+      </div>
 
       <h2 class="player-title" id="currentTitle"></h2>
       <div class="player-subtitle">Shidanna</div>
 
       <audio id="audio" preload="metadata"></audio>
 
-      <input id="seekBar" type="range" min="0" max="100" value="0">
+      <input
+        id="seekBar"
+        type="range"
+        min="0"
+        max="100"
+        value="0"
+        aria-label="再生位置"
+      >
+
       <div class="time-row">
         <span id="currentTime">0:00</span>
         <span id="duration">0:00</span>
       </div>
 
       <div class="controls">
-        <button class="control" id="prevButton" aria-label="前の曲">|◀</button>
-        <button class="play" id="playButton" aria-label="再生">▶</button>
-        <button class="control" id="nextButton" aria-label="次の曲">▶|</button>
+        <button
+          class="control"
+          id="prevButton"
+          aria-label="前の曲"
+        >|◀</button>
+
+        <button
+          class="play"
+          id="playButton"
+          aria-label="再生"
+        >▶</button>
+
+        <button
+          class="control"
+          id="nextButton"
+          aria-label="次の曲"
+        >▶|</button>
       </div>
 
-      <p class="note" id="message">音源はこれから設定します。</p>
+      <p class="note" id="message">曲を選択してください。</p>
     </section>
   </main>
 
   <script>
-  
-const tracks = [
-  {
-    title: "タイトルループ",
-    src: "assets/タイトルループ.m4a",
-    cover: "assets/タイトルループ.jpg"
-  },
-  {
-    title: "在りし日の唄",
-    src: "assets/在りし日の唄.m4a",
-    cover: "assets/在りし日の唄.jpg"
-  },
-  {
-    title: "往く地の果てには",
-    src: "assets/往く地の果てには.m4a",
-    cover: "assets/往く地の果てには.jpg"
-  },
-  {
-    title: "王の子は煉獄に踊る",
-    src: "assets/王の子は煉獄に踊る.m4a",
-    cover: "assets/王の子は煉獄に踊る.jpg"
-  },
-  {
-    title: "神よ、その黄昏よ",
-    src: "assets/神よ、その黄昏よ.m4a",
-    cover: "assets/神よ、その黄昏よ.jpg"
-  }
-];
+    const tracks = [
+      {
+        title: "タイトルループ",
+        src: "assets/タイトルループ.m4a",
+        cover: "assets/タイトルループ.jpg"
+      },
+      {
+        title: "在りし日の唄",
+        src: "assets/在りし日の唄.m4a",
+        cover: "assets/在りし日の唄.jpg"
+      },
+      {
+        title: "往く地の果てには",
+        src: "assets/往く地の果てには.m4a",
+        cover: "assets/往く地の果てには.jpg"
+      },
+      {
+        title: "王の子は煉獄に踊る",
+        src: "assets/王の子は煉獄に踊る.m4a",
+        cover: "assets/王の子は煉獄に踊る.jpg"
+      },
+      {
+        title: "神よ、その黄昏よ",
+        src: "assets/神よ、その黄昏よ.m4a",
+        cover: "assets/神よ、その黄昏よ.jpg"
+      }
+    ];
 
     let currentIndex = 0;
 
@@ -291,96 +388,110 @@ const tracks = [
     const playButton = document.getElementById("playButton");
     const seekBar = document.getElementById("seekBar");
     const message = document.getElementById("message");
-   
-function renderList() {
-  trackList.innerHTML = "";
+    const coverImage = document.getElementById("coverImage");
+    const currentTitle = document.getElementById("currentTitle");
+    const currentTime = document.getElementById("currentTime");
+    const duration = document.getElementById("duration");
 
-  tracks.forEach((track, index) => {
-    const button = document.createElement("button");
-    button.className = "track";
+    function renderList() {
+      trackList.innerHTML = "";
 
-    // ジャケット画像
-    const cover = document.createElement("img");
-    cover.className = "track-cover";
-    cover.src = track.cover;
-    cover.alt = track.title + "のジャケット";
-    cover.loading = "lazy";
+      tracks.forEach((track, index) => {
+        const button = document.createElement("button");
+        button.className = "track";
+        button.type = "button";
 
-    // 曲名とサブタイトル
-    const info = document.createElement("span");
-    info.className = "track-info";
+        const cover = document.createElement("img");
+        cover.className = "track-cover";
+        cover.src = track.cover;
+        cover.alt = "";
+        cover.loading = "lazy";
 
-    const title = document.createElement("span");
-    title.className = "track-title";
-    title.textContent = track.title;
+        const info = document.createElement("span");
+        info.className = "track-info";
 
-    const subtitle = document.createElement("span");
-    subtitle.className = "track-subtitle";
-    subtitle.textContent = "Shidanna";
+        const title = document.createElement("span");
+        title.className = "track-title";
+        title.textContent = track.title;
 
-    // 右側の矢印
-    const arrow = document.createElement("span");
-    arrow.className = "arrow";
-    arrow.textContent = "›";
+        const subtitle = document.createElement("span");
+        subtitle.className = "track-subtitle";
+        subtitle.textContent = "Shidanna";
 
-    info.append(title, subtitle);
-    button.append(cover, info, arrow);
+        const arrow = document.createElement("span");
+        arrow.className = "arrow";
+        arrow.textContent = "›";
+        arrow.setAttribute("aria-hidden", "true");
 
-    button.addEventListener("click", () => openTrack(index));
-    trackList.appendChild(button);
-  });
-}
+        info.append(title, subtitle);
+        button.append(cover, info, arrow);
+
+        button.addEventListener("click", () => openTrack(index));
+        trackList.appendChild(button);
+      });
+    }
 
     function openTrack(index) {
       currentIndex = (index + tracks.length) % tracks.length;
       const track = tracks[currentIndex];
 
-      document.getElementById("currentTitle").textContent = track.title;
-const coverImage = document.getElementById("coverImage");
-coverImage.src = track.cover;
-coverImage.alt = track.title + "のジャケット";
-
-      listScreen.classList.add("hidden");
-      playerScreen.classList.remove("hidden");
-
       audio.pause();
       audio.src = track.src;
       audio.load();
 
-      playButton.textContent = "▶";
-      seekBar.value = 0;
-      document.getElementById("currentTime").textContent = "0:00";
-      document.getElementById("duration").textContent = "0:00";
+      currentTitle.textContent = track.title;
+      coverImage.src = track.cover;
+      coverImage.alt = track.title + "のジャケット";
 
-      message.textContent = track.src
-        ? "再生ボタンを押してください。"
-        : "この曲の音源はまだ設定されていません。";
+      listScreen.classList.add("hidden");
+      playerScreen.classList.remove("hidden");
+
+      playButton.textContent = "▶";
+      playButton.setAttribute("aria-label", "再生");
+      seekBar.value = 0;
+      currentTime.textContent = "0:00";
+      duration.textContent = "0:00";
+      message.textContent = "再生ボタンを押してください。";
     }
 
     function formatTime(seconds) {
       if (!Number.isFinite(seconds)) return "0:00";
+
       const minutes = Math.floor(seconds / 60);
       const remaining = Math.floor(seconds % 60);
+
       return minutes + ":" + String(remaining).padStart(2, "0");
     }
 
     playButton.addEventListener("click", async () => {
       if (!audio.getAttribute("src")) {
-        message.textContent = "音源を追加すると再生できます。";
+        message.textContent = "曲を選択してください。";
         return;
       }
 
       if (audio.paused) {
         try {
           await audio.play();
-          playButton.textContent = "Ⅱ";
-          message.textContent = "再生中";
-        } catch {
-          message.textContent = "音源を読み込めません。ファイルの場所を確認してください。";
+        } catch (error) {
+          message.textContent =
+            "音源を読み込めません。ファイル名と保存場所を確認してください。";
         }
       } else {
         audio.pause();
-        playButton.textContent = "▶";
+      }
+    });
+
+    audio.addEventListener("play", () => {
+      playButton.textContent = "Ⅱ";
+      playButton.setAttribute("aria-label", "一時停止");
+      message.textContent = "再生中";
+    });
+
+    audio.addEventListener("pause", () => {
+      playButton.textContent = "▶";
+      playButton.setAttribute("aria-label", "再生");
+
+      if (audio.currentTime > 0 && !audio.ended) {
         message.textContent = "一時停止中";
       }
     });
@@ -389,7 +500,6 @@ coverImage.alt = track.title + "のジャケット";
       audio.pause();
       listScreen.classList.remove("hidden");
       playerScreen.classList.add("hidden");
-      playButton.textContent = "▶";
     });
 
     document.getElementById("prevButton").addEventListener("click", () => {
@@ -401,13 +511,11 @@ coverImage.alt = track.title + "のジャケット";
     });
 
     audio.addEventListener("loadedmetadata", () => {
-      document.getElementById("duration").textContent =
-        formatTime(audio.duration);
+      duration.textContent = formatTime(audio.duration);
     });
 
     audio.addEventListener("timeupdate", () => {
-      document.getElementById("currentTime").textContent =
-        formatTime(audio.currentTime);
+      currentTime.textContent = formatTime(audio.currentTime);
 
       if (Number.isFinite(audio.duration) && audio.duration > 0) {
         seekBar.value = audio.currentTime / audio.duration * 100;
@@ -416,16 +524,26 @@ coverImage.alt = track.title + "のジャケット";
 
     seekBar.addEventListener("input", () => {
       if (Number.isFinite(audio.duration) && audio.duration > 0) {
-        audio.currentTime = Number(seekBar.value) / 100 * audio.duration;
+        audio.currentTime =
+          Number(seekBar.value) / 100 * audio.duration;
       }
     });
 
     audio.addEventListener("ended", () => {
       playButton.textContent = "▶";
+      playButton.setAttribute("aria-label", "再生");
       message.textContent = "再生が終了しました。";
+    });
+
+    audio.addEventListener("error", () => {
+      if (audio.getAttribute("src")) {
+        message.textContent =
+          "音源を読み込めません。ファイル名と保存場所を確認してください。";
+      }
     });
 
     renderList();
   </script>
 </body>
 </html>
+```
