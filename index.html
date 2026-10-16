@@ -479,24 +479,18 @@
       background: transparent;
     }
 
-    #seekBar::-webkit-slider-thumb {
-      width: 11px;
-      height: 11px;
-      margin-top: -3.5px;
-      appearance: none;
-      -webkit-appearance: none;
-      border: 1px solid var(--gold);
-      border-radius: 50%;
-      background: var(--ivory);
-      box-shadow: 0 0 8px #00000030;
-    }
+   /* シークバーの丸を大きくする */
+#seekBar::-webkit-slider-thumb {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
 
-    #seekBar::-moz-range-track {
-      height: 4px;
-      border: 0;
-      border-radius: 10px;
-      background: transparent;
-    }
+#seekBar::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
 
     #seekBar::-moz-range-progress {
       height: 4px;
