@@ -1,0 +1,377 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>在りし日の唄 | Music Player</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #17191d;
+      color: #f3f0e9;
+      font-family: "Yu Gothic", sans-serif;
+    }
+
+    main {
+      width: min(100%, 430px);
+      min-height: 100vh;
+      margin: auto;
+      padding: 28px 22px;
+      background: linear-gradient(160deg, #292c32, #17191d 65%);
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .back {
+      border: 0;
+      background: transparent;
+      color: #e9dfc8;
+      font-size: 16px;
+      padding: 8px 0;
+    }
+
+    h1 {
+      font-size: 21px;
+      font-weight: 500;
+      letter-spacing: .12em;
+      margin: 0;
+    }
+
+    .subtitle {
+      color: #aaa69e;
+      font-size: 11px;
+      letter-spacing: .18em;
+      margin-top: 7px;
+    }
+
+    .track {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 17px 12px;
+      border: 0;
+      border-bottom: 1px solid #45464a;
+      color: #f3f0e9;
+      background: transparent;
+      text-align: left;
+    }
+
+    .track:hover {
+      background: #ffffff0b;
+    }
+
+    .number {
+      color: #b9a77d;
+      font-size: 12px;
+      width: 22px;
+    }
+
+    .track-title {
+      flex: 1;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .arrow {
+      color: #a9a49b;
+    }
+
+    .cover {
+      width: min(100%, 310px);
+      aspect-ratio: 1;
+      margin: 0 auto 27px;
+      background: #33353a;
+      display: grid;
+      place-items: center;
+      border: 1px solid #55504a;
+      color: #d7c8a6;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .cover-inner {
+      border: 1px solid #877858;
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-content: center;
+      gap: 12px;
+    }
+
+    .cover-mark {
+      font-size: 48px;
+      font-family: serif;
+    }
+
+    .cover-caption {
+      font-size: 12px;
+      letter-spacing: .15em;
+    }
+
+    .player-title {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 500;
+      margin: 0 0 8px;
+    }
+
+    .player-subtitle {
+      text-align: center;
+      font-size: 11px;
+      color: #aaa69e;
+      margin-bottom: 30px;
+    }
+
+    .time-row {
+      display: flex;
+      justify-content: space-between;
+      color: #b8b4ad;
+      font-size: 11px;
+      margin-top: 10px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: #c7b58c;
+      cursor: pointer;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 35px;
+      margin: 30px 0;
+    }
+
+    .control {
+      background: transparent;
+      border: 0;
+      color: #f3f0e9;
+      font-size: 25px;
+      min-width: 34px;
+    }
+
+    .play {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      border: 1px solid #c7b58c;
+      background: #c7b58c;
+      color: #17191d;
+      font-size: 24px;
+    }
+
+    .hidden { display: none; }
+
+    .note {
+      font-size: 11px;
+      color: #aaa69e;
+      line-height: 1.8;
+      text-align: center;
+      margin-top: 28px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section id="listScreen">
+      <header>
+        <div>
+          <h1>曲一覧</h1>
+          <div class="subtitle">MUSIC COLLECTION</div>
+        </div>
+      </header>
+
+      <div id="trackList"></div>
+      <p class="note">曲を選択すると再生画面に移動します。</p>
+    </section>
+
+    <section id="playerScreen" class="hidden">
+      <header>
+        <button class="back" id="backButton">← 曲一覧</button>
+      </header>
+
+      <div class="cover">
+        <div class="cover-inner">
+          <div class="cover-mark">唄</div>
+          <div class="cover-caption" id="coverCaption">在りし日の唄</div>
+        </div>
+      </div>
+
+      <h2 class="player-title" id="currentTitle"></h2>
+      <div class="player-subtitle">SOUNDTRACK</div>
+
+      <audio id="audio" preload="metadata"></audio>
+
+      <input id="seekBar" type="range" min="0" max="100" value="0">
+      <div class="time-row">
+        <span id="currentTime">0:00</span>
+        <span id="duration">0:00</span>
+      </div>
+
+      <div class="controls">
+        <button class="control" id="prevButton" aria-label="前の曲">|◀</button>
+        <button class="play" id="playButton" aria-label="再生">▶</button>
+        <button class="control" id="nextButton" aria-label="次の曲">▶|</button>
+      </div>
+
+      <p class="note" id="message">音源はこれから設定します。</p>
+    </section>
+  </main>
+
+  <script>
+    const tracks = [
+      { title: "タイトルループ", src: "", cover: "" },
+      { title: "在りし日の唄", src: "", cover: "" },
+      { title: "往く地の果てには", src: "", cover: "" },
+      { title: "王の子は煉獄に踊る", src: "", cover: "" },
+      { title: "神よ、その黄昏よ", src: "", cover: "" }
+    ];
+
+    let currentIndex = 0;
+
+    const listScreen = document.getElementById("listScreen");
+    const playerScreen = document.getElementById("playerScreen");
+    const trackList = document.getElementById("trackList");
+    const audio = document.getElementById("audio");
+    const playButton = document.getElementById("playButton");
+    const seekBar = document.getElementById("seekBar");
+    const message = document.getElementById("message");
+
+    function renderList() {
+      trackList.innerHTML = "";
+
+      tracks.forEach((track, index) => {
+        const button = document.createElement("button");
+        button.className = "track";
+
+        const number = document.createElement("span");
+        number.className = "number";
+        number.textContent = String(index + 1).padStart(2, "0");
+
+        const title = document.createElement("span");
+        title.className = "track-title";
+        title.textContent = track.title;
+
+        const arrow = document.createElement("span");
+        arrow.className = "arrow";
+        arrow.textContent = "›";
+
+        button.append(number, title, arrow);
+        button.addEventListener("click", () => openTrack(index));
+        trackList.appendChild(button);
+      });
+    }
+
+    function openTrack(index) {
+      currentIndex = (index + tracks.length) % tracks.length;
+      const track = tracks[currentIndex];
+
+      document.getElementById("currentTitle").textContent = track.title;
+      document.getElementById("coverCaption").textContent = track.title;
+
+      listScreen.classList.add("hidden");
+      playerScreen.classList.remove("hidden");
+
+      audio.pause();
+      audio.src = track.src;
+      audio.load();
+
+      playButton.textContent = "▶";
+      seekBar.value = 0;
+      document.getElementById("currentTime").textContent = "0:00";
+      document.getElementById("duration").textContent = "0:00";
+
+      message.textContent = track.src
+        ? "再生ボタンを押してください。"
+        : "この曲の音源はまだ設定されていません。";
+    }
+
+    function formatTime(seconds) {
+      if (!Number.isFinite(seconds)) return "0:00";
+      const minutes = Math.floor(seconds / 60);
+      const remaining = Math.floor(seconds % 60);
+      return minutes + ":" + String(remaining).padStart(2, "0");
+    }
+
+    playButton.addEventListener("click", async () => {
+      if (!audio.getAttribute("src")) {
+        message.textContent = "音源を追加すると再生できます。";
+        return;
+      }
+
+      if (audio.paused) {
+        try {
+          await audio.play();
+          playButton.textContent = "Ⅱ";
+          message.textContent = "再生中";
+        } catch {
+          message.textContent = "音源を読み込めません。ファイルの場所を確認してください。";
+        }
+      } else {
+        audio.pause();
+        playButton.textContent = "▶";
+        message.textContent = "一時停止中";
+      }
+    });
+
+    document.getElementById("backButton").addEventListener("click", () => {
+      audio.pause();
+      listScreen.classList.remove("hidden");
+      playerScreen.classList.add("hidden");
+      playButton.textContent = "▶";
+    });
+
+    document.getElementById("prevButton").addEventListener("click", () => {
+      openTrack(currentIndex - 1);
+    });
+
+    document.getElementById("nextButton").addEventListener("click", () => {
+      openTrack(currentIndex + 1);
+    });
+
+    audio.addEventListener("loadedmetadata", () => {
+      document.getElementById("duration").textContent =
+        formatTime(audio.duration);
+    });
+
+    audio.addEventListener("timeupdate", () => {
+      document.getElementById("currentTime").textContent =
+        formatTime(audio.currentTime);
+
+      if (Number.isFinite(audio.duration) && audio.duration > 0) {
+        seekBar.value = audio.currentTime / audio.duration * 100;
+      }
+    });
+
+    seekBar.addEventListener("input", () => {
+      if (Number.isFinite(audio.duration) && audio.duration > 0) {
+        audio.currentTime = Number(seekBar.value) / 100 * audio.duration;
+      }
+    });
+
+    audio.addEventListener("ended", () => {
+      playButton.textContent = "▶";
+      message.textContent = "再生が終了しました。";
+    });
+
+    renderList();
+  </script>
+</body>
+</html>
