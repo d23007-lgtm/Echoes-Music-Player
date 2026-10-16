@@ -206,12 +206,9 @@
         <button class="back" id="backButton">← 曲一覧</button>
       </header>
 
-      <div class="cover">
-        <div class="cover-inner">
-          <div class="cover-mark">唄</div>
-          <div class="cover-caption" id="coverCaption">在りし日の唄</div>
-        </div>
-      </div>
+   <div class="cover">
+  <img id="coverImage" src="" alt="ジャケット画像">
+</div>
 
       <h2 class="player-title" id="currentTitle"></h2>
       <div class="player-subtitle">SOUNDTRACK</div>
@@ -235,13 +232,34 @@
   </main>
 
   <script>
-    const tracks = [
-      { title: "タイトルループ", src: "", cover: "" },
-      { title: "在りし日の唄", src: "", cover: "" },
-      { title: "往く地の果てには", src: "", cover: "" },
-      { title: "王の子は煉獄に踊る", src: "", cover: "" },
-      { title: "神よ、その黄昏よ", src: "", cover: "" }
-    ];
+  
+const tracks = [
+  {
+    title: "タイトルループ",
+    src: "assets/タイトルループ.m4a",
+    cover: "assets/タイトルループ.jpg"
+  },
+  {
+    title: "在りし日の唄",
+    src: "assets/在りし日の歌.m4a",
+    cover: "assets/在りし日の歌.jpg"
+  },
+  {
+    title: "往く地の果てには",
+    src: "assets/往く地の果てには.m4a",
+    cover: "assets/往く地の果てには.jpg"
+  },
+  {
+    title: "王の子は煉獄に踊る",
+    src: "assets/王の子は煉獄に踊る.m4a",
+    cover: "assets/王の子は煉獄に踊る.jpg"
+  },
+  {
+    title: "神よ、その黄昏よ",
+    src: "assets/神よ、その黄昏よ.m4a",
+    cover: "assets/神よ、その黄昏よ.jpg"
+  }
+];
 
     let currentIndex = 0;
 
