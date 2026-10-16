@@ -96,7 +96,7 @@
       margin-top: 8px;
     }
 
-    /* すべての曲 */
+    /* 曲一覧 */
 
     .track {
       display: flex;
@@ -180,7 +180,7 @@
       transform: scale(1.08);
     }
 
-    /* 背景を暗くして文字を読みやすくする */
+    /* 背景を暗くする */
 
     #playerScreen::after {
       content: "";
@@ -208,7 +208,7 @@
       font-size: 14px;
     }
 
-    /* 中央のジャケット */
+    /* ジャケット */
 
     .cover {
       width: min(100%, 310px);
@@ -227,6 +227,34 @@
       object-fit: contain;
     }
 
+    /* 曲変更時のスライドアニメーション */
+
+    .cover.slide-next {
+      animation: coverSlideNext .22s ease-out both;
+    }
+
+    .cover.slide-prev {
+      animation: coverSlidePrev .22s ease-out both;
+    }
+
+    @keyframes coverSlideNext {
+      from {
+        transform: translateX(18px);
+      }
+      to {
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes coverSlidePrev {
+      from {
+        transform: translateX(-18px);
+      }
+      to {
+        transform: translateX(0);
+      }
+    }
+
     .player-title {
       text-align: center;
       font-family: Georgia, "Yu Mincho", serif;
@@ -238,20 +266,16 @@
       margin: 0 0 8px;
     }
 
-.player-subtitle {
-  text-align: center;
-  color: var(--muted);
-  font-size: 10px;
-  letter-spacing: .22em;
-  text-transform: none;
-  margin-bottom: 28px;
-}
+    .player-subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: none;
+      margin-bottom: 28px;
+    }
 
     /* 再生位置 */
-
-    .progress-area {
-      margin-top: 24px;
-    }
 
     #seekBar {
       display: block;
@@ -303,102 +327,6 @@
       margin-top: 30px;
     }
 
-    .control-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 44px;
-      height: 44px;
-      border: 0;
-      border-radius: 50%;
-      background: transparent;
-      color: var(--ivory);
-      font-size: 22px;
-      transition:
-        color .2s ease,
-        background .2s ease,
-        transform .2s ease;
-    }
-
-    .control-button:hover {
-      color: var(--gold);
-      transform: scale(1.06);
-    }
-
-    .play-button {
-      width: 62px;
-      height: 62px;
-      background: var(--red);
-      color: var(--ivory);
-      font-size: 24px;
-      box-shadow: 0 5px 20px #00000035;
-    }
-
-    .play-button:hover {
-      background: var(--red-hover);
-      color: var(--ivory);
-    }
-
-    .play-button:active {
-      transform: scale(.96);
-    }
-
-    .status-message {
-      min-height: 18px;
-      margin-top: 20px;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.7;
-      text-align: center;
-    }
-
-    /* スマートフォンでの表示調整 */
-
-    @media (max-width: 360px) {
-      main {
-        padding-right: 16px;
-        padding-left: 16px;
-      }
-
-      #playerScreen {
-        margin-right: -16px;
-        margin-left: -16px;
-        padding-right: 16px;
-        padding-left: 16px;
-      }
-
-      .cover {
-        width: min(100%, 280px);
-      }
-
-      .controls {
-        gap: 24px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        transition-duration: 0.01ms !important;
-      }
-    }
-        /* 画面の表示・非表示 */
-    .hidden {
-      display: none !important;
-    }
-
-    /* 補足メッセージ */
-    .note {
-      min-height: 18px;
-      margin-top: 20px;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.7;
-      text-align: center;
-    }
-
-    /* 再生ボタンのクラス名をHTMLに合わせる */
     .control {
       display: flex;
       align-items: center;
@@ -440,62 +368,68 @@
     .play:active {
       transform: scale(.96);
     }
-    
 
-/* 画面の表示・非表示 */
-.hidden {
-  display: none !important;
-}
+    .note {
+      min-height: 18px;
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.7;
+      text-align: center;
+    }
 
-/* 画面切り替え */
-.fade-in {
-  animation: pageFadeIn 0.3s ease both;
-}
+    .hidden {
+      display: none !important;
+    }
 
-@keyframes pageFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+    /* 画面切り替え */
 
-/* ジャケットの登場アニメーション */
-.cover {
-  animation: coverFadeIn 0.4s cubic-bezier(.2, .7, .3, 1) both;
-}
+    .fade-in {
+      animation: pageFadeIn .3s ease both;
+    }
 
-@keyframes coverFadeIn {
-  from {
-    opacity: 0;
-    transform: scale(.96);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
+    @keyframes pageFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-/* 動きを減らす設定 */
-@media (prefers-reduced-motion: reduce) {
-  .fade-in,
-  .cover {
-    animation: none !important;
-  }
-}
+    @media (max-width: 360px) {
+      main {
+        padding-right: 16px;
+        padding-left: 16px;
+      }
 
-/* 動きを減らす設定が有効な場合 */
-@media (prefers-reduced-motion: reduce) {
-  #listScreen,
-  #playerScreen,
-  .fade-in {
-    animation: none;
-    transition: none;
-  }
-}
+      #playerScreen {
+        margin-right: -16px;
+        margin-left: -16px;
+        padding-right: 16px;
+        padding-left: 16px;
+      }
+
+      .cover {
+        width: min(100%, 280px);
+      }
+
+      .controls {
+        gap: 24px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in,
+      .cover.slide-next,
+      .cover.slide-prev,
+      .track {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
   </style>
 </head>
 
@@ -514,8 +448,10 @@
     </section>
 
     <section id="playerScreen" class="hidden">
-      <header>
-        <button class="back" id="backButton">＜ すべての曲</button>
+      <header class="player-header">
+        <button class="back" id="backButton" type="button">
+          ＜ すべての曲
+        </button>
       </header>
 
       <div class="cover">
@@ -545,18 +481,21 @@
         <button
           class="control"
           id="prevButton"
+          type="button"
           aria-label="前の曲"
         >|◀</button>
 
         <button
           class="play"
           id="playButton"
+          type="button"
           aria-label="再生"
         >▶</button>
 
         <button
           class="control"
           id="nextButton"
+          type="button"
           aria-label="次の曲"
         >▶|</button>
       </div>
@@ -608,6 +547,17 @@
     const currentTime = document.getElementById("currentTime");
     const duration = document.getElementById("duration");
 
+    function formatTime(seconds) {
+      if (!Number.isFinite(seconds) || seconds < 0) {
+        return "0:00";
+      }
+
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = Math.floor(seconds % 60);
+
+      return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
+    }
+
     function renderList() {
       trackList.innerHTML = "";
 
@@ -641,54 +591,80 @@
         info.append(title, subtitle);
         button.append(cover, info, arrow);
 
-        button.addEventListener("click", () => openTrack(index));
+        button.addEventListener("click", () => {
+          openTrack(index);
+        });
+
         trackList.appendChild(button);
       });
     }
 
- 
-function openTrack(index, animateScreen = true) {
-  currentIndex = (index + tracks.length) % tracks.length;
-  const track = tracks[currentIndex];
+    function openTrack(index, animateScreen = true, direction = null) {
+      currentIndex = (index + tracks.length) % tracks.length;
+      const track = tracks[currentIndex];
 
-  audio.pause();
-  audio.src = track.src;
-  audio.load();
+      audio.pause();
+      audio.src = track.src;
+      audio.load();
 
-  currentTitle.textContent = track.title;
-  coverImage.src = track.cover;
-  coverImage.alt = track.title + "のジャケット";
+      currentTitle.textContent = track.title;
+      coverImage.src = track.cover;
+      coverImage.alt = track.title + "のジャケット";
 
-  // 背景を新しいジャケットに切り替える
-  playerScreen.style.setProperty(
-    "--cover-bg",
-    `url("${track.cover}")`
-  );
+      playerScreen.style.setProperty(
+        "--cover-bg",
+        `url("${track.cover}")`
+      );
 
-  listScreen.classList.add("hidden");
-  playerScreen.classList.remove("hidden");
+      listScreen.classList.add("hidden");
+      playerScreen.classList.remove("hidden");
 
-  // 一覧から開いたときだけ画面をフェードイン
-  playerScreen.classList.remove("fade-in");
+      playerScreen.classList.remove("fade-in");
 
-  if (animateScreen) {
-    void playerScreen.offsetWidth;
-    playerScreen.classList.add("fade-in");
-  }
+      if (animateScreen) {
+        void playerScreen.offsetWidth;
+        playerScreen.classList.add("fade-in");
+      }
 
-  // 曲を切り替えるときはジャケットだけ動かす
-  const cover = playerScreen.querySelector(".cover");
-  cover.style.animation = "none";
-  void cover.offsetWidth;
-  cover.style.animation = "";
+      const cover = playerScreen.querySelector(".cover");
 
-  playButton.textContent = "▶";
-  playButton.setAttribute("aria-label", "再生");
-  seekBar.value = 0;
-  currentTime.textContent = "0:00";
-  duration.textContent = "0:00";
-  message.textContent = "再生ボタンを押してください。";
-}
+      cover.classList.remove("slide-next", "slide-prev");
+
+      if (direction) {
+        void cover.offsetWidth;
+        cover.classList.add(
+          direction === "next" ? "slide-next" : "slide-prev"
+        );
+      }
+
+      playButton.textContent = "▶";
+      playButton.setAttribute("aria-label", "再生");
+      seekBar.value = 0;
+      currentTime.textContent = "0:00";
+      duration.textContent = "0:00";
+      message.textContent = "再生ボタンを押してください。";
+    }
+
+    /* 再生・一時停止 */
+
+    playButton.addEventListener("click", async () => {
+      if (!audio.getAttribute("src")) {
+        message.textContent = "曲を選択してください。";
+        return;
+      }
+
+      if (audio.paused) {
+        try {
+          await audio.play();
+        } catch (error) {
+          console.error("音源の再生に失敗しました:", error);
+          message.textContent =
+            "再生できません。音源ファイルの保存場所と名前を確認してください。";
+        }
+      } else {
+        audio.pause();
+      }
+    });
 
     audio.addEventListener("play", () => {
       playButton.textContent = "Ⅱ";
@@ -705,45 +681,34 @@ function openTrack(index, animateScreen = true) {
       }
     });
 
-    
-playButton.addEventListener("click", async () => {
-  if (!audio.src) {
-    message.textContent = "曲を選択してください。";
-    return;
-  }
+    /* 曲一覧へ戻る */
 
-  if (audio.paused) {
-    try {
-      await audio.play();
-    } catch (error) {
-      console.error("音源の再生に失敗しました:", error);
-      message.textContent =
-        "再生できません。音源ファイルの保存場所を確認してください。";
-    }
-  } else {
-    audio.pause();
-  }
-});
+    document.getElementById("backButton").addEventListener("click", () => {
+      audio.pause();
 
-document.getElementById("backButton").addEventListener("click", () => {
-  audio.pause();
+      playerScreen.classList.add("hidden");
+      listScreen.classList.remove("hidden");
 
-  playerScreen.classList.add("hidden");
-  listScreen.classList.remove("hidden");
+      listScreen.classList.remove("fade-in");
+      void listScreen.offsetWidth;
+      listScreen.classList.add("fade-in");
+    });
 
-  // 曲一覧をふわっと表示
-  listScreen.classList.remove("fade-in");
-  void listScreen.offsetWidth;
-  listScreen.classList.add("fade-in");
-});
-   
-document.getElementById("prevButton").addEventListener("click", () => {
-  openTrack(currentIndex - 1, false);
-});
+    /* 前の曲・次の曲 */
 
-document.getElementById("nextButton").addEventListener("click", () => {
-  openTrack(currentIndex + 1, false);
-});
+    document.getElementById("prevButton").addEventListener("click", () => {
+      openTrack(currentIndex - 1, false, "prev");
+    });
+
+    document.getElementById("nextButton").addEventListener("click", () => {
+      openTrack(currentIndex + 1, false, "next");
+    });
+
+    /* 再生時間の更新 */
+
+    audio.addEventListener("loadedmetadata", () => {
+      duration.textContent = formatTime(audio.duration);
+    });
 
     audio.addEventListener("timeupdate", () => {
       currentTime.textContent = formatTime(audio.currentTime);
@@ -753,6 +718,8 @@ document.getElementById("nextButton").addEventListener("click", () => {
       }
     });
 
+    /* シークバー */
+
     seekBar.addEventListener("input", () => {
       if (Number.isFinite(audio.duration) && audio.duration > 0) {
         audio.currentTime =
@@ -760,11 +727,15 @@ document.getElementById("nextButton").addEventListener("click", () => {
       }
     });
 
+    /* 曲の終了 */
+
     audio.addEventListener("ended", () => {
       playButton.textContent = "▶";
       playButton.setAttribute("aria-label", "再生");
       message.textContent = "再生が終了しました。";
     });
+
+    /* 音源の読み込みエラー */
 
     audio.addEventListener("error", () => {
       if (audio.getAttribute("src")) {
