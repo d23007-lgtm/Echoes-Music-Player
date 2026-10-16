@@ -3,220 +3,163 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#171719">
+  <meta name="theme-color" content="#211719">
   <title>Echoes Music Player | Shidanna</title>
 
   <style>
-    * {
-      box-sizing: border-box;
+    :root {
+      --background: #211719;
+      --panel: #302326;
+      --text: #f5eee5;
+      --muted: #b9a9a6;
+      --accent: #d4b477;
+      --border: #6b5555;
     }
 
-    :root {
-      --background: #171719;
-      --panel: #30272A;
-      --panel-light: #3B3034;
-      --red: #A51F2B;
-      --red-hover: #C02A37;
-      --ivory: #F0E9D9;
-      --muted: #C5B8B0;
-      --line: #514044;
-      --gold: #B6A078;
+    * {
+      box-sizing: border-box;
     }
 
     body {
       margin: 0;
       min-height: 100vh;
-      background: var(--background);
-      color: var(--ivory);
-      font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN",
-        Meiryo, sans-serif;
-    }
-
-    main {
-      width: min(100%, 430px);
-      min-height: 100vh;
-      margin: auto;
-      padding: 28px 22px;
+      padding: 24px 16px 40px;
+      color: var(--text);
       background:
-        radial-gradient(
-          ellipse at top,
-          #493238 0%,
-          transparent 52%
-        ),
-        linear-gradient(
-          160deg,
-          var(--panel),
-          var(--background) 70%
-        );
+        radial-gradient(ellipse at top, #493036 0%, transparent 55%),
+        var(--background);
+      font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
     }
 
-    header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 32px;
+    button,
+    input {
+      font: inherit;
     }
 
     button {
-      font: inherit;
+      color: inherit;
       cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
     }
 
-    button:focus-visible,
-    input:focus-visible {
-      outline: 2px solid var(--gold);
-      outline-offset: 4px;
+    .app {
+      width: min(100%, 430px);
+      margin: 0 auto;
     }
 
-    .back {
-      border: 0;
-      background: transparent;
-      color: var(--ivory);
-      font-size: 14px;
-      padding: 8px 0;
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
     }
 
-    .back:hover {
-      color: var(--gold);
-    }
-
-    h1 {
-      font-family: Georgia, "Yu Mincho", serif;
-      font-size: 22px;
-      font-weight: 500;
-      letter-spacing: .12em;
+    .brand {
       margin: 0;
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
     }
 
-    .subtitle {
+    .brand-subtitle {
+      margin-top: 5px;
       color: var(--muted);
-      font-size: 10px;
-      letter-spacing: .2em;
-      margin-top: 8px;
+      font-size: 11px;
+      letter-spacing: 0.2em;
     }
 
-    /* 曲一覧 */
+    .back-button {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: #ffffff08;
+      font-size: 20px;
+    }
+
+    .screen {
+      animation: fadeIn 0.25s ease both;
+    }
+
+    .screen.hidden {
+      display: none;
+    }
+
+    .section-title {
+      margin: 0 0 18px;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+    }
+
+    .track-list {
+      display: grid;
+      gap: 10px;
+    }
 
     .track {
       display: flex;
+      width: 100%;
       align-items: center;
       gap: 14px;
-      width: 100%;
-      padding: 12px 8px;
-      border: 0;
-      border-bottom: 1px solid var(--line);
-      color: var(--ivory);
-      background: transparent;
+      padding: 12px;
+      border: 1px solid #ffffff12;
+      border-radius: 12px;
+      background: #ffffff06;
       text-align: left;
-      transition: background .2s ease;
+      transition: background 0.2s ease;
     }
 
-    .track:hover,
-    .track:focus-visible {
-      background: #A51F2B22;
+    .track:hover {
+      background: #ffffff12;
     }
 
     .track-cover {
-      width: 60px;
-      height: 60px;
+      width: 58px;
+      height: 58px;
       flex-shrink: 0;
+      border-radius: 5px;
       object-fit: cover;
-      border: 1px solid #6B5555;
-      border-radius: 2px;
       background: var(--panel);
     }
 
     .track-info {
-      flex: 1;
       min-width: 0;
     }
 
     .track-title {
-      display: block;
+      margin: 0;
       font-size: 14px;
-      line-height: 1.7;
+      line-height: 1.6;
       overflow-wrap: anywhere;
     }
 
-    .track-subtitle {
-      display: block;
+    .track-label {
+      margin-top: 5px;
       color: var(--muted);
       font-size: 10px;
-      letter-spacing: .12em;
-      margin-top: 4px;
+      letter-spacing: 0.15em;
     }
 
-    .arrow {
-      color: var(--gold);
-      flex-shrink: 0;
-      font-size: 22px;
+    .track-arrow {
+      margin-left: auto;
+      color: var(--accent);
+      font-size: 18px;
     }
 
-    /* 再生画面 */
-
-    #playerScreen {
-      position: relative;
-      isolation: isolate;
-      overflow: hidden;
-      min-height: 100vh;
-      margin: -28px -22px;
-      padding: 28px 22px;
-      background: var(--background);
+    .player {
+      text-align: center;
     }
-
-    /* ジャケットを拡大したぼかし背景 */
-
-    #playerScreen::before {
-      content: "";
-      position: absolute;
-      z-index: -2;
-      inset: -35px;
-      background-image: var(--cover-bg, none);
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-      filter: blur(30px) brightness(.80) saturate(.85);
-      transform: scale(1.08);
-    }
-
-    /* 背景を暗くする */
-
-    #playerScreen::after {
-      content: "";
-      position: absolute;
-      z-index: -1;
-      inset: 0;
-      background: linear-gradient(
-        180deg,
-        rgba(23, 23, 25, .48) 0%,
-        rgba(23, 23, 25, .65) 45%,
-        rgba(23, 23, 25, .94) 100%
-      );
-      pointer-events: none;
-    }
-
-    #playerScreen > * {
-      position: relative;
-    }
-
-    .player-header {
-      margin-bottom: 26px;
-    }
-
-    .player-header .back {
-      font-size: 14px;
-    }
-
-    /* ジャケット */
 
     .cover {
+      position: relative;
       width: min(100%, 310px);
       aspect-ratio: 1 / 1;
       margin: 0 auto 28px;
-      background: var(--panel);
-      border: 1px solid #6B5555;
       overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--panel);
       box-shadow: 0 16px 40px #00000045;
     }
 
@@ -224,17 +167,41 @@
       display: block;
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
     }
 
-    /* 曲変更時のスライドアニメーション */
+    .cover-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--accent);
+    }
 
+    .seal {
+      display: grid;
+      width: 68px;
+      height: 68px;
+      place-items: center;
+      border: 1px solid var(--accent);
+      font-size: 30px;
+    }
+
+    .cover-placeholder p {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    /* 曲を切り替えるとジャケットが横から入る */
     .cover.slide-next {
-      animation: coverSlideNext .22s ease-out both;
+      animation: coverSlideNext 0.22s ease-out both;
     }
 
     .cover.slide-prev {
-      animation: coverSlidePrev .22s ease-out both;
+      animation: coverSlidePrev 0.22s ease-out both;
     }
 
     @keyframes coverSlideNext {
@@ -255,256 +222,225 @@
       }
     }
 
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
     .player-title {
-      text-align: center;
-      font-family: Georgia, "Yu Mincho", serif;
+      margin: 0;
       font-size: 21px;
-      font-weight: 500;
+      font-weight: 600;
       line-height: 1.6;
-      letter-spacing: .06em;
       overflow-wrap: anywhere;
-      margin: 0 0 8px;
     }
 
     .player-subtitle {
-      text-align: center;
+      margin-top: 6px;
       color: var(--muted);
       font-size: 10px;
-      letter-spacing: .22em;
-      text-transform: none;
-      margin-bottom: 28px;
+      letter-spacing: 0.25em;
     }
 
-    /* 再生位置 */
+    .progress-area {
+      margin-top: 32px;
+    }
 
-    #seekBar {
+    .seek-bar {
       display: block;
       width: 100%;
-      height: 4px;
+      height: 5px;
       margin: 0;
+      border-radius: 10px;
+      outline: none;
       appearance: none;
       -webkit-appearance: none;
-      border-radius: 0;
-      background: var(--line);
+      background: #ffffff2b;
       cursor: pointer;
-      accent-color: var(--gold);
     }
 
-    #seekBar::-webkit-slider-thumb {
+    .seek-bar::-webkit-slider-thumb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
       appearance: none;
       -webkit-appearance: none;
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: var(--ivory);
-      border: 1px solid var(--gold);
+      background: var(--accent);
+      box-shadow: 0 0 8px #00000035;
     }
 
-    #seekBar::-moz-range-thumb {
-      width: 11px;
-      height: 11px;
+    .seek-bar::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border: none;
       border-radius: 50%;
-      background: var(--ivory);
-      border: 1px solid var(--gold);
+      background: var(--accent);
     }
 
     .time-row {
       display: flex;
       justify-content: space-between;
+      margin-top: 10px;
       color: var(--muted);
       font-size: 11px;
-      margin-top: 12px;
       font-variant-numeric: tabular-nums;
     }
-
-    /* 再生コントロール */
 
     .controls {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 34px;
-      margin-top: 30px;
+      gap: 30px;
+      margin-top: 24px;
     }
 
-    .control {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .control-button {
+      display: grid;
       width: 44px;
       height: 44px;
-      border: 0;
+      place-items: center;
+      border: none;
       border-radius: 50%;
       background: transparent;
-      color: var(--ivory);
-      font-size: 22px;
-      transition: color .2s ease, transform .2s ease;
+      color: var(--text);
+      font-size: 23px;
     }
 
-    .control:hover {
-      color: var(--gold);
-      transform: scale(1.06);
+    .control-button:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
     }
 
-    .play {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .play-button {
       width: 62px;
       height: 62px;
-      border: 0;
-      border-radius: 50%;
-      background: var(--red);
-      color: var(--ivory);
-      font-size: 24px;
-      box-shadow: 0 5px 20px #00000035;
-      transition: background .2s ease, transform .2s ease;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #261c18;
+      font-size: 25px;
+      box-shadow: 0 5px 22px #00000030;
     }
 
-    .play:hover {
-      background: var(--red-hover);
-    }
-
-    .play:active {
-      transform: scale(.96);
-    }
-
-    .note {
-      min-height: 18px;
-      margin-top: 20px;
+    .message {
+      min-height: 20px;
+      margin: 18px 0 0;
       color: var(--muted);
-      font-size: 11px;
+      font-size: 12px;
       line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+
+    .footer {
+      margin-top: 38px;
+      color: #a18f8d;
+      font-size: 10px;
+      letter-spacing: 0.15em;
       text-align: center;
     }
 
-    .hidden {
-      display: none !important;
-    }
-
-    /* 画面切り替え */
-
-    .fade-in {
-      animation: pageFadeIn .3s ease both;
-    }
-
-    @keyframes pageFadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @media (max-width: 360px) {
-      main {
-        padding-right: 16px;
-        padding-left: 16px;
-      }
-
-      #playerScreen {
-        margin-right: -16px;
-        margin-left: -16px;
-        padding-right: 16px;
-        padding-left: 16px;
-      }
-
-      .cover {
-        width: min(100%, 280px);
-      }
-
-      .controls {
-        gap: 24px;
-      }
-    }
-
     @media (prefers-reduced-motion: reduce) {
-      .fade-in,
-      .cover.slide-next,
-      .cover.slide-prev,
-      .track {
-        animation: none !important;
-        transition: none !important;
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
       }
     }
   </style>
 </head>
 
 <body>
-  <main>
-    <section id="listScreen">
-      <header>
-        <div>
-          <h1>すべての曲</h1>
-          <div class="subtitle">Music Collection</div>
+  <main class="app">
+    <header class="header">
+      <div>
+        <h1 class="brand">Echoes Music Player</h1>
+        <div class="brand-subtitle">SHIDANNA</div>
+      </div>
+
+      <button
+        class="back-button"
+        id="backButton"
+        type="button"
+        aria-label="曲一覧に戻る"
+        hidden
+      >←</button>
+    </header>
+
+    <section class="screen" id="listScreen">
+      <h2 class="section-title">MUSIC LIBRARY</h2>
+      <div class="track-list" id="trackList"></div>
+    </section>
+
+    <section class="screen hidden" id="playerScreen">
+      <div class="player">
+        <div class="cover" id="cover">
+          <div class="cover-placeholder" id="coverPlaceholder">
+            <div class="seal">唄</div>
+            <p>在りし日の唄</p>
+          </div>
+          <img id="coverImage" src="" alt="ジャケット画像" hidden>
         </div>
-      </header>
 
-      <div id="trackList"></div>
-      <p class="note">曲を選択すると再生画面に移動します。</p>
+        <h2 class="player-title" id="currentTitle"></h2>
+        <div class="player-subtitle">SOUNDTRACK</div>
+
+        <audio id="audio" preload="metadata"></audio>
+
+        <div class="progress-area">
+          <input
+            class="seek-bar"
+            id="seekBar"
+            type="range"
+            min="0"
+            max="100"
+            step="0.01"
+            value="0"
+            aria-label="再生位置"
+          >
+
+          <div class="time-row">
+            <span id="currentTime">0:00</span>
+            <span id="durationTime">0:00</span>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button
+            class="control-button"
+            id="prevButton"
+            type="button"
+            aria-label="前の曲"
+          >|◀</button>
+
+          <button
+            class="control-button play-button"
+            id="playButton"
+            type="button"
+            aria-label="再生"
+          >▶</button>
+
+          <button
+            class="control-button"
+            id="nextButton"
+            type="button"
+            aria-label="次の曲"
+          >▶|</button>
+        </div>
+
+        <p class="message" id="message" aria-live="polite"></p>
+      </div>
     </section>
 
-    <section id="playerScreen" class="hidden">
-      <header class="player-header">
-        <button class="back" id="backButton" type="button">
-          ＜ すべての曲
-        </button>
-      </header>
-
-      <div class="cover">
-        <img id="coverImage" src="" alt="ジャケット画像">
-      </div>
-
-      <h2 class="player-title" id="currentTitle"></h2>
-      <div class="player-subtitle">Shidanna</div>
-
-      <audio id="audio" preload="metadata"></audio>
-
-      <input
-        id="seekBar"
-        type="range"
-        min="0"
-        max="100"
-        value="0"
-        aria-label="再生位置"
-      >
-
-      <div class="time-row">
-        <span id="currentTime">0:00</span>
-        <span id="duration">0:00</span>
-      </div>
-
-      <div class="controls">
-        <button
-          class="control"
-          id="prevButton"
-          type="button"
-          aria-label="前の曲"
-        >|◀</button>
-
-        <button
-          class="play"
-          id="playButton"
-          type="button"
-          aria-label="再生"
-        >▶</button>
-
-        <button
-          class="control"
-          id="nextButton"
-          type="button"
-          aria-label="次の曲"
-        >▶|</button>
-      </div>
-
-      <p class="note" id="message">曲を選択してください。</p>
-    </section>
+    <footer class="footer">MUSIC IS A MEMORY.</footer>
   </main>
 
   <script>
+    // 音源とジャケットのファイル名は、GitHub上の名前と一致させてください。
     const tracks = [
       {
         title: "タイトルループ",
@@ -533,19 +469,28 @@
       }
     ];
 
-    let currentIndex = 0;
-
     const listScreen = document.getElementById("listScreen");
     const playerScreen = document.getElementById("playerScreen");
     const trackList = document.getElementById("trackList");
+    const backButton = document.getElementById("backButton");
+
     const audio = document.getElementById("audio");
-    const playButton = document.getElementById("playButton");
-    const seekBar = document.getElementById("seekBar");
-    const message = document.getElementById("message");
+    const cover = document.getElementById("cover");
     const coverImage = document.getElementById("coverImage");
+    const coverPlaceholder = document.getElementById("coverPlaceholder");
+
     const currentTitle = document.getElementById("currentTitle");
     const currentTime = document.getElementById("currentTime");
-    const duration = document.getElementById("duration");
+    const durationTime = document.getElementById("durationTime");
+    const seekBar = document.getElementById("seekBar");
+    const playButton = document.getElementById("playButton");
+    const prevButton = document.getElementById("prevButton");
+    const nextButton = document.getElementById("nextButton");
+    const message = document.getElementById("message");
+
+    let currentIndex = -1;
+    let animationFrameId = null;
+    let isSeeking = false;
 
     function formatTime(seconds) {
       if (!Number.isFinite(seconds) || seconds < 0) {
@@ -559,96 +504,160 @@
     }
 
     function renderList() {
-      trackList.innerHTML = "";
+      trackList.replaceChildren();
 
       tracks.forEach((track, index) => {
         const button = document.createElement("button");
-        button.className = "track";
         button.type = "button";
+        button.className = "track";
 
-        const cover = document.createElement("img");
-        cover.className = "track-cover";
-        cover.src = track.cover;
-        cover.alt = "";
-        cover.loading = "lazy";
+        const image = document.createElement("img");
+        image.className = "track-cover";
+        image.src = track.cover;
+        image.alt = "";
+        image.loading = "lazy";
 
-        const info = document.createElement("span");
+        image.addEventListener("error", () => {
+          image.style.visibility = "hidden";
+        });
+
+        const info = document.createElement("div");
         info.className = "track-info";
 
-        const title = document.createElement("span");
+        const title = document.createElement("p");
         title.className = "track-title";
         title.textContent = track.title;
 
-        const subtitle = document.createElement("span");
-        subtitle.className = "track-subtitle";
-        subtitle.textContent = "Shidanna";
+        const label = document.createElement("div");
+        label.className = "track-label";
+        label.textContent = "SOUNDTRACK";
+
+        info.append(title, label);
 
         const arrow = document.createElement("span");
-        arrow.className = "arrow";
+        arrow.className = "track-arrow";
         arrow.textContent = "›";
-        arrow.setAttribute("aria-hidden", "true");
 
-        info.append(title, subtitle);
-        button.append(cover, info, arrow);
-
-        button.addEventListener("click", () => {
-          openTrack(index);
-        });
+        button.append(image, info, arrow);
+        button.addEventListener("click", () => openTrack(index));
 
         trackList.appendChild(button);
       });
     }
 
+    function stopBarAnimation() {
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+    }
+
+    // 再生中だけ、画面の描画タイミングに合わせてバーを更新する
+    function updatePlaybackBar() {
+      if (audio.paused || audio.ended || !Number.isFinite(audio.duration)) {
+        animationFrameId = null;
+        return;
+      }
+
+      if (!isSeeking) {
+        seekBar.value = (audio.currentTime / audio.duration) * 100;
+        currentTime.textContent = formatTime(audio.currentTime);
+      }
+
+      animationFrameId = requestAnimationFrame(updatePlaybackBar);
+    }
+
+    function startBarAnimation() {
+      stopBarAnimation();
+      updatePlaybackBar();
+    }
+
+    function updatePlayButton() {
+      if (audio.paused) {
+        playButton.textContent = "▶";
+        playButton.setAttribute("aria-label", "再生");
+      } else {
+        playButton.textContent = "Ⅱ";
+        playButton.setAttribute("aria-label", "一時停止");
+      }
+    }
+
+    function showPlayer() {
+      listScreen.classList.add("hidden");
+      playerScreen.classList.remove("hidden");
+      backButton.hidden = false;
+    }
+
+    function showList() {
+      audio.pause();
+      stopBarAnimation();
+
+      playerScreen.classList.add("hidden");
+      listScreen.classList.remove("hidden");
+      backButton.hidden = true;
+
+      message.textContent = "";
+    }
+
     function openTrack(index, animateScreen = true, direction = null) {
-      currentIndex = (index + tracks.length) % tracks.length;
+      if (index < 0 || index >= tracks.length) return;
+
+      stopBarAnimation();
+      audio.pause();
+
+      currentIndex = index;
       const track = tracks[currentIndex];
 
-      audio.pause();
+      message.textContent = "";
+      currentTitle.textContent = track.title;
+
+      // ジャケット画像を更新
+      coverImage.hidden = true;
+      coverImage.onload = () => {
+        coverImage.hidden = false;
+        coverPlaceholder.hidden = true;
+      };
+
+      coverImage.onerror = () => {
+        coverImage.hidden = true;
+        coverPlaceholder.hidden = false;
+        coverPlaceholder.querySelector("p").textContent = track.title;
+      };
+
+      coverImage.src = track.cover;
+
+      // 曲の音源を更新
       audio.src = track.src;
       audio.load();
 
-      currentTitle.textContent = track.title;
-      coverImage.src = track.cover;
-      coverImage.alt = track.title + "のジャケット";
-
-      playerScreen.style.setProperty(
-        "--cover-bg",
-        `url("${track.cover}")`
-      );
-
-      listScreen.classList.add("hidden");
-      playerScreen.classList.remove("hidden");
-
-      playerScreen.classList.remove("fade-in");
-
-      if (animateScreen) {
-        void playerScreen.offsetWidth;
-        playerScreen.classList.add("fade-in");
-      }
-
-      const cover = playerScreen.querySelector(".cover");
+      seekBar.value = 0;
+      currentTime.textContent = "0:00";
+      durationTime.textContent = "0:00";
+      playButton.textContent = "▶";
+      playButton.setAttribute("aria-label", "再生");
 
       cover.classList.remove("slide-next", "slide-prev");
 
-      if (direction) {
+      if (direction === "next") {
         void cover.offsetWidth;
-        cover.classList.add(
-          direction === "next" ? "slide-next" : "slide-prev"
-        );
+        cover.classList.add("slide-next");
+      } else if (direction === "prev") {
+        void cover.offsetWidth;
+        cover.classList.add("slide-prev");
       }
 
-      playButton.textContent = "▶";
-      playButton.setAttribute("aria-label", "再生");
-      seekBar.value = 0;
-      currentTime.textContent = "0:00";
-      duration.textContent = "0:00";
-      message.textContent = "再生ボタンを押してください。";
+      showPlayer();
+
+      if (animateScreen) {
+        playerScreen.style.animation = "none";
+        void playerScreen.offsetWidth;
+        playerScreen.style.animation = "";
+      }
     }
 
-    /* 再生・一時停止 */
-
+    // 再生・一時停止
     playButton.addEventListener("click", async () => {
-      if (!audio.getAttribute("src")) {
+      if (currentIndex < 0) {
         message.textContent = "曲を選択してください。";
         return;
       }
@@ -656,94 +665,98 @@
       if (audio.paused) {
         try {
           await audio.play();
+          message.textContent = "";
         } catch (error) {
           console.error("音源の再生に失敗しました:", error);
           message.textContent =
-            "再生できません。音源ファイルの保存場所と名前を確認してください。";
+            "再生できません。音源ファイルの場所と名前を確認してください。";
         }
       } else {
         audio.pause();
       }
     });
 
+    // 再生開始時
     audio.addEventListener("play", () => {
-      playButton.textContent = "Ⅱ";
-      playButton.setAttribute("aria-label", "一時停止");
-      message.textContent = "再生中";
+      updatePlayButton();
+      startBarAnimation();
     });
 
+    // 一時停止時
     audio.addEventListener("pause", () => {
-      playButton.textContent = "▶";
-      playButton.setAttribute("aria-label", "再生");
+      updatePlayButton();
+      stopBarAnimation();
 
-      if (audio.currentTime > 0 && !audio.ended) {
-        message.textContent = "一時停止中";
+      if (Number.isFinite(audio.duration) && !isSeeking) {
+        seekBar.value = (audio.currentTime / audio.duration) * 100;
+        currentTime.textContent = formatTime(audio.currentTime);
       }
     });
 
-    /* 曲一覧へ戻る */
-
-    document.getElementById("backButton").addEventListener("click", () => {
-      audio.pause();
-
-      playerScreen.classList.add("hidden");
-      listScreen.classList.remove("hidden");
-
-      listScreen.classList.remove("fade-in");
-      void listScreen.offsetWidth;
-      listScreen.classList.add("fade-in");
-    });
-
-    /* 前の曲・次の曲 */
-
-    document.getElementById("prevButton").addEventListener("click", () => {
-      openTrack(currentIndex - 1, false, "prev");
-    });
-
-    document.getElementById("nextButton").addEventListener("click", () => {
-      openTrack(currentIndex + 1, false, "next");
-    });
-
-    /* 再生時間の更新 */
-
+    // 曲の長さが読み込まれたとき
     audio.addEventListener("loadedmetadata", () => {
-      duration.textContent = formatTime(audio.duration);
-    });
-
-    audio.addEventListener("timeupdate", () => {
-      currentTime.textContent = formatTime(audio.currentTime);
+      durationTime.textContent = formatTime(audio.duration);
 
       if (Number.isFinite(audio.duration) && audio.duration > 0) {
-        seekBar.value = audio.currentTime / audio.duration * 100;
+        seekBar.value = (audio.currentTime / audio.duration) * 100;
       }
     });
 
-    /* シークバー */
-
+    // シークバーを操作している間は、再生位置をドラッグに合わせる
     seekBar.addEventListener("input", () => {
-      if (Number.isFinite(audio.duration) && audio.duration > 0) {
-        audio.currentTime =
-          Number(seekBar.value) / 100 * audio.duration;
+      if (!Number.isFinite(audio.duration) || audio.duration <= 0) {
+        return;
+      }
+
+      isSeeking = true;
+
+      const percentage = Number(seekBar.value) / 100;
+      audio.currentTime = percentage * audio.duration;
+      currentTime.textContent = formatTime(audio.currentTime);
+    });
+
+    seekBar.addEventListener("change", () => {
+      isSeeking = false;
+
+      if (!audio.paused) {
+        startBarAnimation();
       }
     });
 
-    /* 曲の終了 */
-
+    // 再生終了時
     audio.addEventListener("ended", () => {
-      playButton.textContent = "▶";
-      playButton.setAttribute("aria-label", "再生");
-      message.textContent = "再生が終了しました。";
+      stopBarAnimation();
+      seekBar.value = 100;
+      currentTime.textContent = formatTime(audio.duration);
+      updatePlayButton();
     });
 
-    /* 音源の読み込みエラー */
-
+    // 音源の読み込みエラー
     audio.addEventListener("error", () => {
-      if (audio.getAttribute("src")) {
+      if (currentIndex >= 0) {
         message.textContent =
-          "音源を読み込めません。ファイル名と保存場所を確認してください。";
+          "音源を読み込めません。assets内のファイル名を確認してください。";
       }
     });
 
+    // 前の曲
+    prevButton.addEventListener("click", () => {
+      if (currentIndex > 0) {
+        openTrack(currentIndex - 1, false, "prev");
+      }
+    });
+
+    // 次の曲
+    nextButton.addEventListener("click", () => {
+      if (currentIndex < tracks.length - 1) {
+        openTrack(currentIndex + 1, false, "next");
+      }
+    });
+
+    // 曲一覧へ戻る
+    backButton.addEventListener("click", showList);
+
+    // 最初の一覧を表示
     renderList();
   </script>
 </body>
